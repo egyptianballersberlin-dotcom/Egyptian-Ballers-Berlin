@@ -125,6 +125,15 @@ export default async function HomePage() {
           </Link>
         )}
 
+        {/* Next game announcement */}
+        <div className="bg-green-700 text-white rounded-3xl p-4 flex items-center gap-3">
+          <span className="text-2xl">📣</span>
+          <div>
+            <div className="font-bold text-sm">Next game: Saturday 4th July</div>
+            <div className="text-xs text-green-200 mt-0.5">No game on June 27th — see you on the 4th! 🟢</div>
+          </div>
+        </div>
+
         {!registrationOpen && (
           <div className="bg-amber-50 border border-amber-200 rounded-3xl p-4 flex items-center gap-3">
             <span className="text-2xl">⏳</span>
