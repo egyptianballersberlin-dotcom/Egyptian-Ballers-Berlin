@@ -28,7 +28,7 @@ export default async function HomePage() {
 
   // Wednesday registration opens check
   const wednesday = new Date(satDate)
-  wednesday.setDate(satDate.getDate() - 10)
+  wednesday.setDate(satDate.getDate() - 3)
   wednesday.setHours(0, 0, 0, 0)
   const registrationOpen = today >= wednesday
 
