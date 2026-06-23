@@ -11,11 +11,15 @@ export default async function GamesPage() {
 
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
 
-  const { data: games } = await supabase
+  const BLOCKED_DATES = ['2026-06-27']
+
+  const { data: allGames } = await supabase
     .from('games')
     .select('*')
     .order('game_date', { ascending: false })
     .limit(20)
+
+  const games = allGames?.filter(g => !BLOCKED_DATES.includes(g.game_date))
 
   const gameIds = games?.map(g => g.id) ?? []
   const { data: regCounts } = await supabase

@@ -11,8 +11,17 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
 
   const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single()
 
+  const BLOCKED_DATES = ['2026-06-27']
+
   const { data: game } = await supabase.from('games').select('*').eq('id', id).single()
   if (!game) notFound()
+  if (BLOCKED_DATES.includes(game.game_date)) notFound()
+
+  const gameDate = new Date(game.game_date + 'T12:00:00')
+  const wednesday = new Date(gameDate)
+  wednesday.setDate(gameDate.getDate() - 3)
+  wednesday.setHours(0, 0, 0, 0)
+  const registrationOpen = new Date() >= wednesday
 
   const { data: registrations } = await supabase
     .from('registrations')
@@ -43,6 +52,7 @@ export default async function GamePage({ params }: { params: Promise<{ id: strin
           currentUserId={user.id}
           myRegistration={myReg}
           myAttendance={myAttendance}
+          registrationOpen={registrationOpen}
         />
       </main>
     </div>
