@@ -18,7 +18,7 @@ export default async function HomePage() {
     .single()
 
   // Upcoming Saturday — skip blocked dates
-  const BLOCKED_DATES = ['2026-06-28']
+  const BLOCKED_DATES = ['2026-06-27']
   const today = new Date()
   let satDate = isSaturday(today) ? today : nextSaturday(today)
   while (BLOCKED_DATES.includes(format(satDate, 'yyyy-MM-dd'))) {
@@ -125,16 +125,7 @@ export default async function HomePage() {
           </Link>
         )}
 
-        {/* Next game announcement */}
-        <div className="bg-green-700 text-white rounded-3xl p-4 flex items-center gap-3">
-          <span className="text-2xl">📣</span>
-          <div>
-            <div className="font-bold text-sm">Next game: Saturday 4th July</div>
-            <div className="text-xs text-green-200 mt-0.5">No game on June 27th — see you on the 4th! 🟢</div>
-          </div>
-        </div>
-
-        {!registrationOpen && (
+{!registrationOpen && (
           <div className="bg-amber-50 border border-amber-200 rounded-3xl p-4 flex items-center gap-3">
             <span className="text-2xl">⏳</span>
             <div>

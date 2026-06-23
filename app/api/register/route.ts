@@ -50,7 +50,7 @@ export async function POST(req: Request) {
   if (!game) return NextResponse.json({ error: 'Game not found' }, { status: 404 })
 
   // Block specific dates
-  const BLOCKED_DATES = ['2026-06-28']
+  const BLOCKED_DATES = ['2026-06-27']
   if (BLOCKED_DATES.includes(game.game_date)) {
     return NextResponse.json({ error: 'This game has been cancelled. No registrations allowed.' }, { status: 403 })
   }
