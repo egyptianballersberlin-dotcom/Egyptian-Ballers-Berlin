@@ -17,10 +17,20 @@ export default async function HomePage() {
     .eq('id', user.id)
     .single()
 
-  // Upcoming Saturday
+  // Upcoming Saturday — skip blocked dates
+  const BLOCKED_DATES = ['2026-06-28']
   const today = new Date()
-  const satDate = isSaturday(today) ? today : nextSaturday(today)
+  let satDate = isSaturday(today) ? today : nextSaturday(today)
+  while (BLOCKED_DATES.includes(format(satDate, 'yyyy-MM-dd'))) {
+    satDate = nextSaturday(satDate)
+  }
   const satStr = format(satDate, 'yyyy-MM-dd')
+
+  // Wednesday registration opens check
+  const wednesday = new Date(satDate)
+  wednesday.setDate(satDate.getDate() - 3)
+  wednesday.setHours(0, 0, 0, 0)
+  const registrationOpen = today >= wednesday
 
   // Get or create upcoming game
   let { data: game } = await supabase
@@ -115,6 +125,18 @@ export default async function HomePage() {
           </Link>
         )}
 
+        {!registrationOpen && (
+          <div className="bg-amber-50 border border-amber-200 rounded-3xl p-4 flex items-center gap-3">
+            <span className="text-2xl">⏳</span>
+            <div>
+              <div className="font-bold text-amber-800 text-sm">Registration not open yet</div>
+              <div className="text-xs text-amber-700 mt-0.5">
+                Opens Wednesday {wednesday.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}
+              </div>
+            </div>
+          </div>
+        )}
+
         <GameCard
           game={game}
           mainList={mainList}
@@ -123,6 +145,7 @@ export default async function HomePage() {
           currentUserId={user.id}
           myRegistration={myReg ?? null}
           myAttendance={myAttendance ?? null}
+          registrationOpen={registrationOpen}
         />
 
         {/* Location */}

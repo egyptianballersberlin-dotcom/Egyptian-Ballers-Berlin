@@ -11,6 +11,7 @@ interface Props {
   currentUserId: string
   myRegistration: Registration | null
   myAttendance: Attendance | null
+  registrationOpen?: boolean
 }
 
 const AVATAR_COLORS = [
@@ -29,7 +30,7 @@ function avatarColor(name: string) {
   return AVATAR_COLORS[i]
 }
 
-export default function GameCard({ game, mainList, waitingList, attendance, currentUserId, myRegistration, myAttendance }: Props) {
+export default function GameCard({ game, mainList, waitingList, attendance, currentUserId, myRegistration, myAttendance, registrationOpen = true }: Props) {
   const [loading, setLoading] = useState(false)
   const [checkInLoading, setCheckInLoading] = useState(false)
   const [localMain, setLocalMain] = useState(mainList)
@@ -200,10 +201,10 @@ export default function GameCard({ game, mainList, waitingList, attendance, curr
               {!localMyReg ? (
                 <button
                   onClick={register}
-                  disabled={loading}
+                  disabled={loading || !registrationOpen}
                   className="w-full bg-green-600 hover:bg-green-700 active:scale-[0.98] text-white py-3.5 rounded-2xl font-bold shadow-md hover:shadow-lg disabled:opacity-50 transition-all text-base"
                 >
-                  {loading ? '…' : localMain.length < game.max_players ? '✅ I\'m In!' : '📋 Join Waiting List'}
+                  {loading ? '…' : !registrationOpen ? '⏳ Registration not open yet' : localMain.length < game.max_players ? '✅ I\'m In!' : '📋 Join Waiting List'}
                 </button>
               ) : (
                 <div className="space-y-2">

@@ -162,24 +162,50 @@ export default async function DashboardPage() {
         </div>
 
         {/* Next game commitment */}
-        {upcomingGames?.length ? (
-          <div className="bg-white rounded-2xl shadow p-5">
-            <h2 className="font-bold text-gray-900 mb-3">Next Saturday — Who&apos;s In?</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {profiles?.map(p => {
-                const status = upcomingRegs?.find((r: any) => r.user_id === p.id)
-                const card = getCardStatus(p.consecutive_misses ?? 0, p.is_banned ?? false)
-                return (
-                  <div key={p.id} className={`flex items-center gap-2 p-2 rounded-lg text-sm ${status?.list_type === 'main' ? 'bg-green-50' : status?.list_type === 'waiting' ? 'bg-yellow-50' : 'bg-gray-50'}`}>
-                    <span>{status?.list_type === 'main' ? '✅' : status?.list_type === 'waiting' ? '⏳' : '❓'}</span>
-                    <span className="flex-1 truncate text-gray-800">{p.full_name}</span>
-                    {card && <span className="text-xs" title={card.label}>{card.icon}</span>}
-                  </div>
-                )
-              })}
+        {upcomingGames?.length ? (() => {
+          const mainPlayers = profiles?.filter(p => upcomingRegs?.find((r: any) => r.user_id === p.id && r.list_type === 'main')) ?? []
+          const waitingPlayers = profiles?.filter(p => upcomingRegs?.find((r: any) => r.user_id === p.id && r.list_type === 'waiting')) ?? []
+          return (
+            <div className="bg-white rounded-2xl shadow overflow-hidden">
+              <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h2 className="font-bold text-gray-900">Next Saturday — Who&apos;s In?</h2>
+                <span className="text-xs text-gray-400">{mainPlayers.length} confirmed</span>
+              </div>
+              <div className="divide-y divide-gray-50">
+                {mainPlayers.map((p, i) => {
+                  const card = getCardStatus(p.consecutive_misses ?? 0, p.is_banned ?? false, (p as any).is_permanently_banned ?? false)
+                  const isMe = p.id === user.id
+                  return (
+                    <div key={p.id} className={`flex items-center gap-3 px-5 py-3 ${isMe ? 'bg-green-50' : ''}`}>
+                      <span className="text-xs text-gray-300 font-mono w-4">{i + 1}</span>
+                      <span className="text-green-500">✅</span>
+                      <span className={`flex-1 text-sm ${isMe ? 'font-bold text-green-800' : 'font-medium text-gray-800'}`}>
+                        {p.full_name}{isMe ? ' (you)' : ''}
+                      </span>
+                      {card && <span className="text-sm" title={card.label}>{card.icon}</span>}
+                    </div>
+                  )
+                })}
+                {waitingPlayers.map((p, i) => {
+                  const isMe = p.id === user.id
+                  return (
+                    <div key={p.id} className={`flex items-center gap-3 px-5 py-3 ${isMe ? 'bg-amber-50' : 'bg-gray-50/50'}`}>
+                      <span className="text-xs text-gray-300 font-mono w-4">{i + 1}</span>
+                      <span className="text-amber-500">⏳</span>
+                      <span className={`flex-1 text-sm ${isMe ? 'font-bold text-amber-800' : 'font-medium text-gray-500'}`}>
+                        {p.full_name}{isMe ? ' (you)' : ''}
+                      </span>
+                      <span className="text-xs text-gray-400">waiting</span>
+                    </div>
+                  )
+                })}
+                {mainPlayers.length === 0 && waitingPlayers.length === 0 && (
+                  <div className="px-5 py-6 text-center text-sm text-gray-300">No one registered yet</div>
+                )}
+              </div>
             </div>
-          </div>
-        ) : null}
+          )
+        })() : null}
 
         {/* Leaderboard */}
         <div className="bg-white rounded-2xl shadow overflow-hidden">

@@ -6,6 +6,7 @@ import PlayerBadge from '@/components/PlayerBadge'
 import { getLevel, getCardStatus } from '@/lib/gamification'
 import Link from 'next/link'
 import LiftBanButton from '@/components/LiftBanButton'
+import DeletePlayerButton from '@/components/DeletePlayerButton'
 
 export default async function AdminPage() {
   const supabase = await createClient()
@@ -95,6 +96,7 @@ export default async function AdminPage() {
                     {p.card.icon} {p.card.type === 'red' ? 'Red card' : 'Yellow card'}
                   </div>
                 )}
+                <DeletePlayerButton userId={p.id} playerName={p.full_name} />
               </div>
             ))}
           </div>

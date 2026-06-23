@@ -49,6 +49,26 @@ export async function POST(req: Request) {
 
   if (!game) return NextResponse.json({ error: 'Game not found' }, { status: 404 })
 
+  // Block specific dates
+  const BLOCKED_DATES = ['2026-06-28']
+  if (BLOCKED_DATES.includes(game.game_date)) {
+    return NextResponse.json({ error: 'This game has been cancelled. No registrations allowed.' }, { status: 403 })
+  }
+
+  // Registration only opens on Wednesday of that week
+  const gameDate = new Date(game.game_date + 'T12:00:00')
+  const wednesday = new Date(gameDate)
+  wednesday.setDate(gameDate.getDate() - 3) // Saturday - 3 days = Wednesday
+  wednesday.setHours(0, 0, 0, 0)
+  const now = new Date()
+  if (now < wednesday) {
+    const wedStr = wednesday.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })
+    return NextResponse.json(
+      { error: `⏳ Registration not open yet. It opens on ${wedStr}.` },
+      { status: 403 }
+    )
+  }
+
   // Count current main list
   const { count: mainCount } = await supabase
     .from('registrations')
