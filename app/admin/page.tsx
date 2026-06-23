@@ -54,7 +54,7 @@ export default async function AdminPage() {
   return (
     <div>
       <Navbar userName={profile.full_name} isAdmin={profile.is_admin ?? false} />
-      <main className="max-w-4xl mx-auto px-4 py-6 pb-24 sm:pb-8 space-y-4">
+      <main className="max-w-4xl mx-auto px-4 py-6 space-y-4">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-bold text-gray-900">Admin Panel</h1>
           <span className="bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-full">ADMIN</span>

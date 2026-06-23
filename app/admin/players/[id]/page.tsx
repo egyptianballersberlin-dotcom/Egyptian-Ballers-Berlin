@@ -87,7 +87,7 @@ export default async function PlayerHistoryPage({ params }: { params: Promise<{ 
   return (
     <div>
       <Navbar userName={adminProfile.full_name} isAdmin={true} />
-      <main className="max-w-4xl mx-auto px-4 py-6 pb-24 sm:pb-8 space-y-4">
+      <main className="max-w-4xl mx-auto px-4 py-6 space-y-4">
 
         {/* Back */}
         <Link href="/admin" className="text-sm text-green-600 hover:underline">← Back to Admin</Link>

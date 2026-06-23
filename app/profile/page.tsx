@@ -77,7 +77,7 @@ export default async function ProfilePage() {
   return (
     <div>
       <Navbar userName={profile.full_name} isAdmin={profile.is_admin ?? false} />
-      <main className="max-w-2xl mx-auto px-4 py-6 pb-24 sm:pb-8 space-y-4">
+      <main className="max-w-2xl mx-auto px-4 py-6 space-y-4">
 
         {/* Profile header */}
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">

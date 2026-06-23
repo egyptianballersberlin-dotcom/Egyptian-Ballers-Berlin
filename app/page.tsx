@@ -98,7 +98,7 @@ export default async function HomePage() {
   return (
     <div>
       <Navbar userName={profile?.full_name ?? user.email ?? 'Player'} isAdmin={profile?.is_admin ?? false} />
-      <main className="max-w-4xl mx-auto px-4 py-6 pb-24 sm:pb-8 space-y-4">
+      <main className="max-w-4xl mx-auto px-4 py-6 space-y-4">
 
         {/* Last week check-in reminder */}
         {showLastWeekCheckin && (
