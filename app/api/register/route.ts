@@ -58,7 +58,7 @@ export async function POST(req: Request) {
   // Registration only opens on Wednesday of that week
   const gameDate = new Date(game.game_date + 'T12:00:00')
   const wednesday = new Date(gameDate)
-  wednesday.setDate(gameDate.getDate() - 3) // Saturday - 3 days = Wednesday
+  wednesday.setDate(gameDate.getDate() - 10) // Saturday - 10 days = Wednesday of previous week
   wednesday.setHours(0, 0, 0, 0)
   const now = new Date()
   if (now < wednesday) {
