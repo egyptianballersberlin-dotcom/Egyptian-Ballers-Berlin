@@ -27,7 +27,7 @@ export async function updateSession(request: NextRequest) {
 
   if (!user) {
     const isApiRoute = request.nextUrl.pathname.startsWith('/api/')
-    const isAuthPage = request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')
+    const isAuthPage = request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup') || request.nextUrl.pathname.startsWith('/forgot-password') || request.nextUrl.pathname.startsWith('/reset-password')
 
     if (isApiRoute) {
       // Return 401 for API calls so fetch() gets JSON, not a redirect
